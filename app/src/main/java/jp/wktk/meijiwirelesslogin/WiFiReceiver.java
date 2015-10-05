@@ -21,9 +21,8 @@ import javax.net.SocketFactory;
 
 public class WiFiReceiver extends BroadcastReceiver implements Callback {
 
+    private PreferencesManager preferencesManager;
     private SocketFactory socketFactory;
-    private String id = "dummy";
-    private String password = "dummy";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -48,6 +47,7 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
         } else {
             socketFactory = SocketFactory.getDefault();
         }
+        preferencesManager = new PreferencesManager(context);
 
         HashMap params = new HashMap();
         params.put("socket", socketFactory);
@@ -73,7 +73,7 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
         params.put("socket", socketFactory);
         params.put("host", uri.getHost());
         params.put("port", 8080);
-        String content = "UserName=" + id + "&Password=" + password;
+        String content = "UserName=" + preferencesManager.getId() + "&Password=" + preferencesManager.getPassword();
         params.put("request",
                 "POST " + uri.getPath() + " HTTP/1.1\n" +
                         "Content-Type: text/plain\n" +
