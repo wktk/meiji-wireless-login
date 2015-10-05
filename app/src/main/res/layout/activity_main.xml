@@ -33,7 +33,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/imputId"
+            android:id="@+id/inputId"
             android:layout_gravity="center_horizontal" />
 
         <TextView
@@ -47,20 +47,21 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
-            android:id="@+id/imputPass"
+            android:id="@+id/inputPass"
             android:layout_gravity="center_horizontal" />
 
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/switchLetterBlind"
-            android:id="@+id/checkBox" />
+            android:id="@+id/showPass"
+            android:onClick="onCheck" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/save"
-            android:id="@+id/button"
+            android:id="@+id/save"
             android:onClick="onClick" />
 
     </LinearLayout>
