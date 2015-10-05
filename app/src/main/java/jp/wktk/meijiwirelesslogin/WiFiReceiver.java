@@ -16,7 +16,7 @@ public class WiFiReceiver extends BroadcastReceiver {
         WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         String ssid = wifiInfo.getSSID();
-        if (!ssid.equals("MIND-wireless-ap-n") && !ssid.equals("MIND-wireless-ap-bg")) {
+        if (!ssid.equals("\"MIND-wireless-ap-n\"") && !ssid.equals("\"MIND-wireless-ap-bg\"")) {
             return;
         }
 
