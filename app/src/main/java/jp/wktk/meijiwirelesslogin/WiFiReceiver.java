@@ -51,9 +51,9 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
 
         HashMap params = new HashMap();
         params.put("socket", socketFactory);
-        params.put("host", "www.yahoo.co.jp");
+        params.put("host", "connectivitycheck.android.com");
         params.put("port", 80);
-        params.put("request", "GET / HTTP/1.1\r\n\r\n");
+        params.put("request", "GET /generate_204 HTTP/1.1\r\n\r\n");
         AsyncSocket asyncSocket = new AsyncSocket(this);
         asyncSocket.execute(params);
     }
