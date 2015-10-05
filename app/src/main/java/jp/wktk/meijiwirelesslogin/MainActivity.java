@@ -38,6 +38,6 @@ public class MainActivity extends AppCompatActivity {
         String id = editId.getText().toString();
         String password = editPass.getText().toString();
         preferencesManager.setCredential(id, password);
-        Toast.makeText(MainActivity.this, "入力完了", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, R.string.saved, Toast.LENGTH_LONG).show();
     }
 }
