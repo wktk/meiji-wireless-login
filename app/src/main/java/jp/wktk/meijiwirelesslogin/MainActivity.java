@@ -8,14 +8,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-
 public class MainActivity extends AppCompatActivity {
     EditText editId, editPass;
     CheckBox showPass;
+    private PreferencesManager preferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
         editId = (EditText)findViewById(R.id.inputId);
         editPass = (EditText)findViewById(R.id.inputPass);
         showPass = (CheckBox)findViewById(R.id.showPass);
+
+        preferencesManager = new PreferencesManager(this);
+        editId.setText(preferencesManager.getId());
+        editPass.setText(preferencesManager.getPassword());
     }
 
     public void onCheck(View v) {
@@ -35,18 +35,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) {
-        String id, pass;
-        id = editId.getText().toString();
-        pass = editPass.getText().toString();
-        try {
-            OutputStream out = openFileOutput("id.txt", MODE_PRIVATE);
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
-            writer.append(id);
-            writer.append(pass);
-            writer.close();
-            Toast.makeText(MainActivity.this, "入力完了", Toast.LENGTH_SHORT).show();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        String id = editId.getText().toString();
+        String password = editPass.getText().toString();
+        preferencesManager.setCredential(id, password);
+        Toast.makeText(MainActivity.this, "入力完了", Toast.LENGTH_SHORT).show();
     }
 }
