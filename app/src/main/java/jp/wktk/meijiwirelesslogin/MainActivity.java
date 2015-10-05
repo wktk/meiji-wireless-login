@@ -9,8 +9,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    EditText editId, editPass;
-    CheckBox showPass;
+    private EditText editId;
+    private EditText editPass;
+    private CheckBox showPass;
     private PreferencesManager preferencesManager;
 
     @Override
