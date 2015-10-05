@@ -4,7 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="login_id">Student / Faculty No.</string>
     <string name="password">Password</string>
-    <string name="action_settings">Settings</string>
     <string name="switchLetterBlind">パスワードを表示</string>
     <string name="next">次へ</string>
     <string name="main_message">学生番号/教職員番号とパスワードを入力してください</string>
