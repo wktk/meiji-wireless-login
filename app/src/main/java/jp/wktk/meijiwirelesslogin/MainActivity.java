@@ -26,26 +26,26 @@ public class MainActivity extends AppCompatActivity {
         showPass = (CheckBox)findViewById(R.id.showPass);
     }
 
-    public void onCheck(View v){
-        if(showPass.isChecked()){
+    public void onCheck(View v) {
+        if (showPass.isChecked()) {
             editPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-        }else{
+        } else {
             editPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         }
     }
 
-    public void onClick(View v){
+    public void onClick(View v) {
         String id, pass;
         id = editId.getText().toString();
         pass = editPass.getText().toString();
-        try{
-            OutputStream out = openFileOutput("id.txt",MODE_PRIVATE);
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(out,"UTF-8"));
+        try {
+            OutputStream out = openFileOutput("id.txt", MODE_PRIVATE);
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
             writer.append(id);
             writer.append(pass);
             writer.close();
             Toast.makeText(MainActivity.this, "入力完了", Toast.LENGTH_SHORT).show();
-        }catch(IOException e){
+        } catch(IOException e) {
             e.printStackTrace();
         }
     }
