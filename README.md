@@ -12,7 +12,7 @@ Automatically log into the MIND Wireless system at Meiji University
 
 GPLv3
 
-(C) [wktk](https://github.com/wktk) 2015
+(C) [wktk](https://github.com/wktk) & [makotsait](https://github.com/makotsait) 2015
 
 ```
 This program is free software: you can redistribute it and/or modify
