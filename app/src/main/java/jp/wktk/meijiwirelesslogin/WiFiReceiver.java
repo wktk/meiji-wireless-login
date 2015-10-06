@@ -60,7 +60,7 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
 
     @Override
     public void onSocketComplete(String response) {
-        String url = null;
+        String url;
         Pattern pattern = Pattern.compile("<LoginURL>(.*)</LoginURL>");
         Matcher matcher = pattern.matcher(response);
         if (matcher.find()) {
