@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class AuthActivity extends AppCompatActivity {
     public static String PREF_ID = "id";
     public static String PREF_PASSWORD = "password";
     public static String PREF_NAME = "credentials";
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_auth);
         editId = (EditText)findViewById(R.id.inputId);
         editPass = (EditText)findViewById(R.id.inputPass);
         showPass = (CheckBox)findViewById(R.id.showPass);
@@ -46,6 +46,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(PREF_ID, editId.getText().toString());
         editor.putString(PREF_PASSWORD, editPass.getText().toString());
         editor.apply();
-        Toast.makeText(MainActivity.this, R.string.saved, Toast.LENGTH_LONG).show();
+        Toast.makeText(AuthActivity.this, R.string.saved, Toast.LENGTH_LONG).show();
     }
 }
