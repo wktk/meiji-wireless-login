@@ -48,7 +48,7 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
         } else {
             socketFactory = SocketFactory.getDefault();
         }
-        sharedPreferences = context.getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(AuthActivity.PREF_NAME, Context.MODE_PRIVATE);
 
         HashMap params = new HashMap();
         params.put("socket", socketFactory);
@@ -75,8 +75,8 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
         params.put("host", uri.getHost());
         params.put("port", 8080);
 
-        String content = "UserName=" + sharedPreferences.getString(MainActivity.PREF_ID, "");
-        content += "&Password=" + sharedPreferences.getString(MainActivity.PREF_PASSWORD, "");
+        String content = "UserName=" + sharedPreferences.getString(AuthActivity.PREF_ID, "");
+        content += "&Password=" + sharedPreferences.getString(AuthActivity.PREF_PASSWORD, "");
         params.put("request",
                 "POST " + uri.getPath() + " HTTP/1.1\n" +
                         "Content-Type: text/plain\n" +
