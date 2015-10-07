@@ -1,4 +1,4 @@
-# meiji-wireless-login
+# Wow! Meiji
 
 Automatically log into the MIND Wireless system at Meiji University
 
