@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -21,7 +22,7 @@ import javax.net.SocketFactory;
 
 public class WiFiReceiver extends BroadcastReceiver implements Callback {
 
-    private PreferencesManager preferencesManager;
+    private SharedPreferences sharedPreferences;
     private SocketFactory socketFactory;
 
     @Override
@@ -47,7 +48,7 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
         } else {
             socketFactory = SocketFactory.getDefault();
         }
-        preferencesManager = new PreferencesManager(context);
+        sharedPreferences = context.getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE);
 
         HashMap params = new HashMap();
         params.put("socket", socketFactory);
@@ -73,7 +74,9 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
         params.put("socket", socketFactory);
         params.put("host", uri.getHost());
         params.put("port", 8080);
-        String content = "UserName=" + preferencesManager.getId() + "&Password=" + preferencesManager.getPassword();
+
+        String content = "UserName=" + sharedPreferences.getString(MainActivity.PREF_ID, "");
+        content += "&Password=" + sharedPreferences.getString(MainActivity.PREF_PASSWORD, "");
         params.put("request",
                 "POST " + uri.getPath() + " HTTP/1.1\n" +
                         "Content-Type: text/plain\n" +

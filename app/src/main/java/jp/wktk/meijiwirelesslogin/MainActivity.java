@@ -1,5 +1,7 @@
 package jp.wktk.meijiwirelesslogin;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -9,10 +11,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    public static String PREF_ID = "id";
+    public static String PREF_PASSWORD = "password";
+    public static String PREF_NAME = "credentials";
     private EditText editId;
     private EditText editPass;
     private CheckBox showPass;
-    private PreferencesManager preferencesManager;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +27,10 @@ public class MainActivity extends AppCompatActivity {
         editPass = (EditText)findViewById(R.id.inputPass);
         showPass = (CheckBox)findViewById(R.id.showPass);
 
-        preferencesManager = new PreferencesManager(this);
-        editId.setText(preferencesManager.getId());
-        editPass.setText(preferencesManager.getPassword());
+        sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+
+        editId.setText(sharedPreferences.getString(PREF_ID, ""));
+        editPass.setText(sharedPreferences.getString(PREF_PASSWORD, ""));
     }
 
     public void onCheck(View v) {
@@ -36,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) {
-        String id = editId.getText().toString();
-        String password = editPass.getText().toString();
-        preferencesManager.setCredential(id, password);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_ID, editId.getText().toString());
+        editor.putString(PREF_PASSWORD, editPass.getText().toString());
+        editor.apply();
         Toast.makeText(MainActivity.this, R.string.saved, Toast.LENGTH_LONG).show();
     }
 }
