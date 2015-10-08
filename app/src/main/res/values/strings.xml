@@ -7,4 +7,8 @@
     <string name="save">保存</string>
     <string name="main_message">学生番号/教職員番号とパスワードを入力してください</string>
     <string name="saved">保存しました</string>
+
+    <string name="auth_setting">タスクバー</string>
+    <string name="taskbar">タスクバー</string>
+    <string name="taskbar_on_off">タスクバーに表示します。</string>
 </resources>

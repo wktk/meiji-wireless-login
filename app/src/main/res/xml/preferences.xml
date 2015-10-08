@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="PreferenceCategory - 2">
+        <PreferenceScreen
+            android:key="preferenceKey2"
+            android:title="@string/auth_setting">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="jp.wktk.meijiwirelesslogin"
+                android:targetClass="jp.wktk.meijiwirelesslogin.AuthActivity" />
+        </PreferenceScreen>
+
+    <ListPreference
+        android:key="list_preference"
+        android:title="sth"
+        android:entries="@array/entries_list_preference"
+        android:entryValues="@array/entryvalues_list_preference"/>
+
+    <CheckBoxPreference
+        android:key="checkbox_preference"
+        android:title="@string/taskbar"
+        android:summary="@string/taskbar_on_off" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,13 +1,18 @@
 package jp.wktk.meijiwirelesslogin;
 
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceScreen;
 import android.support.v7.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+import org.apache.http.auth.AUTH;
+
+public class MainActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
+        addPreferencesFromResource(R.xml.preferences);
     }
-
 }
