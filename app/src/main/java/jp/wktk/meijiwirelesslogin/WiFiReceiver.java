@@ -78,7 +78,7 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
         String content = "UserName=" + sharedPreferences.getString(MainActivity.PREF_ID, "");
         content += "&Password=" + sharedPreferences.getString(MainActivity.PREF_PASSWORD, "");
         params.put("request",
-                "POST " + uri.getPath() + " HTTP/1.1\n" +
+                        "POST " + uri.getPath() + " HTTP/1.1\n" +
                         "Content-Type: text/plain\n" +
                         "Content-length: " + content.length() + "\n" +
                         "\n" + content);
