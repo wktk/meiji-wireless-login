@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".AuthActivity" />
+
         <receiver android:name="jp.wktk.meijiwirelesslogin.WiFiReceiver" >
             <intent-filter android:priority="900">
                 <action android:name="android.net.wifi.STATE_CHANGE" />
