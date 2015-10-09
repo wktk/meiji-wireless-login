@@ -12,18 +12,15 @@
                 android:targetPackage="jp.wktk.meijiwirelesslogin"
                 android:targetClass="jp.wktk.meijiwirelesslogin.AuthActivity" />
         </PreferenceScreen>
+    </PreferenceCategory>
 
-    <ListPreference
-        android:key="list_preference"
-        android:title="sth"
-        android:entries="@array/entries_list_preference"
-        android:entryValues="@array/entryvalues_list_preference"/>
+    <CheckBoxPreference
+        android:key="checkbox_preference"
+        android:title="@string/enable_auto" />
 
     <CheckBoxPreference
         android:key="checkbox_preference"
         android:title="@string/taskbar"
         android:summary="@string/taskbar_on_off" />
-
-    </PreferenceCategory>
 
 </PreferenceScreen>
