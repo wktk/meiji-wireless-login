@@ -14,6 +14,8 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -71,12 +73,16 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
         }
         Uri uri = Uri.parse(url);
         HashMap params = new HashMap();
+        String content;
+        try {
+            content = "UserName=" + URLEncoder.encode(sharedPreferences.getString(MainActivity.PREF_ID, ""), "UTF-8");
+            content += "&Password=" + URLEncoder.encode(sharedPreferences.getString(MainActivity.PREF_PASSWORD, ""), "UTF-8");
+        } catch (IOException e) {
+            return;
+        }
         params.put("socket", socketFactory);
         params.put("host", uri.getHost());
         params.put("port", 8080);
-
-        String content = "UserName=" + sharedPreferences.getString(MainActivity.PREF_ID, "");
-        content += "&Password=" + sharedPreferences.getString(MainActivity.PREF_PASSWORD, "");
         params.put("request",
                         "POST " + uri.getPath() + " HTTP/1.1\n" +
                         "Host: " + uri.getHost() +
