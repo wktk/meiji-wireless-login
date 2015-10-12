@@ -67,6 +67,7 @@ public class MainActivity extends PreferenceActivity {
                 return true;
             }
         });
+        sendNotification();
     }
 
     private int getNotificationIcon() {
