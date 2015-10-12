@@ -63,30 +63,20 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
     protected void onResume() {
         super.onResume();
         cbp = (CheckBoxPreference)findPreference("checkbox_preference");
-        cbp.setOnPreferenceChangeListener(mListPreferenceListener);
+        cbp.setOnPreferenceChangeListener(this);
     }
 
-    private Preference.OnPreferenceChangeListener mListPreferenceListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-            boolean pNotification = sharedPreferences.getBoolean("checkbox_preference", false);
-            if (!(pNotification)) {
-                sendNotification();
-            } else {
-                mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-                mManager.cancel(number);
-            }
-            Log.e("", "ok");
-            onResume();
-            return true;
-        }
-    };
-
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if(newValue != null) {
-            return true;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        boolean pNotification = sharedPreferences.getBoolean("checkbox_preference", false);
+        if (!(pNotification)) {
+            sendNotification();
+        } else {
+            mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            mManager.cancel(number);
         }
-        return false;
+        Log.e("", "ok");
+        onResume();
+        return true;
     }
 }
