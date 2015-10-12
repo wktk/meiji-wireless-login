@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="pref">
+
+    <PreferenceScreen
+        android:key="preferenceKey2"
+        android:title="@string/auth_setting">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="jp.wktk.meijiwirelesslogin"
+            android:targetClass="jp.wktk.meijiwirelesslogin.AuthActivity" />
+    </PreferenceScreen>
+
+    <CheckBoxPreference
+        android:key="checkbox_preference2"
+        android:title="@string/enable_auto" />
+
+    <CheckBoxPreference
+        android:key="checkbox_preference"
+        android:title="@string/taskbar"
+        android:summary="@string/taskbar_on_off" />
+
+</PreferenceScreen>
