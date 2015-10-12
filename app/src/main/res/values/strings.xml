@@ -3,7 +3,7 @@
 
     <string name="login_id">Student / Faculty No.</string>
     <string name="password">Password</string>
-    <string name="switchLetterBlind">パスワードを表示</string>
+    <string name="switch_letter_blind">パスワードを表示</string>
     <string name="save">保存</string>
     <string name="main_message">学生番号/教職員番号とパスワードを入力してください</string>
     <string name="saved">保存しました</string>

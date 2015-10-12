@@ -53,7 +53,7 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/switchLetterBlind"
+            android:text="@string/switch_letter_blind"
             android:id="@+id/showPass"
             android:onClick="onCheck" />
 
