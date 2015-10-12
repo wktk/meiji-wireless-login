@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.preference.PreferenceManager;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -29,6 +30,11 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        sharedPreferences = context.getSharedPreferences("system", Context.MODE_PRIVATE);
+        if (!sharedPreferences.getBoolean("enabled", true)) {
+            return;
+        }
+
         // Return unless connected to the MIND Wireless
         WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();

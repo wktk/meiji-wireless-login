@@ -16,6 +16,7 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
 
     private CheckBoxPreference cbp;
     private NotificationManager mManager;
+    private SharedPreferences globalSharedPreferences;
 
     private void sendNotification() {
         Intent intent = new Intent();
@@ -37,6 +38,7 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        globalSharedPreferences = getSharedPreferences("system", Context.MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         cbp = (CheckBoxPreference)findPreference("taskbar");
@@ -44,9 +46,15 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
     }
 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        boolean pNotification = sharedPreferences.getBoolean("taskbar", false);
-        if (pNotification) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean taskbar = sharedPreferences.getBoolean("taskbar", false);
+        boolean enabled = sharedPreferences.getBoolean("enabled", false);
+        SharedPreferences.Editor editor = globalSharedPreferences.edit();
+        editor.putBoolean("taskbar", taskbar);
+        editor.putBoolean("enabled", enabled);
+        editor.apply();
+
+        if (taskbar) {
             mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
             mManager.cancel(0);
         } else {
