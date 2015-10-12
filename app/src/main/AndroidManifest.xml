@@ -15,7 +15,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <service android:name="NotificationChangeService" />
         </activity>
 
         <activity android:name=".AuthActivity" />
