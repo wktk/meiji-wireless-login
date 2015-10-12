@@ -20,31 +20,31 @@ import android.util.Log;
 
 import org.apache.http.auth.AUTH;
 
-    public class MainActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
+public class MainActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
-        private CheckBoxPreference cbp;
+    private CheckBoxPreference cbp;
 
-        private NotificationManager mManager;
-        private int number = 0;
+    private NotificationManager mManager;
+    private int number = 0;
 
-        private void sendNotification() {
-            mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification n = new Notification();
+    private void sendNotification() {
+        mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification n = new Notification();
 
-            Intent intent = new Intent();
-            intent.setClassName("jp.wktk.meijiwirelesslogin", "jp.wktk.meijiwirelesslogin.MainActivity");
+        Intent intent = new Intent();
+        intent.setClassName("jp.wktk.meijiwirelesslogin", "jp.wktk.meijiwirelesslogin.MainActivity");
 
-            PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
 
-            n.icon = R.drawable.ic_launcher;
-            n.tickerText = "Wow! Meiji";
-            n.number = 1;
-            n.flags = Notification.FLAG_ONGOING_EVENT; // 常駐
-            n.setLatestEventInfo(getApplicationContext(), "Wow! Meiji", "起動中", pi);
+        n.icon = R.drawable.ic_launcher;
+        n.tickerText = "Wow! Meiji";
+        n.number = 1;
+        n.flags = Notification.FLAG_ONGOING_EVENT; // 常駐
+        n.setLatestEventInfo(getApplicationContext(), "Wow! Meiji", "起動中", pi);
 
-            mManager.notify(1, n);
-            number++;
-        }
+        mManager.notify(1, n);
+        number++;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +83,8 @@ import org.apache.http.auth.AUTH;
         }
     };
 
-    public boolean onPreferenceChange(Preference preference, Object newValue)
-    {
-        if(newValue != null)
-        {
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if(newValue != null) {
             return true;
         }
         return false;
