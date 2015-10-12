@@ -6,35 +6,24 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.ConditionVariable;
 import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
-import org.apache.http.auth.AUTH;
 
 public class MainActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
     private CheckBoxPreference cbp;
-
     private NotificationManager mManager;
 
     private void sendNotification() {
-        mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification n = new Notification();
-
         Intent intent = new Intent();
         intent.setClassName("jp.wktk.meijiwirelesslogin", "jp.wktk.meijiwirelesslogin.MainActivity");
 
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
 
+        Notification n = new Notification();
         n.icon = R.drawable.ic_launcher;
         n.tickerText = "Wow! Meiji";
         n.number = 1;
@@ -46,20 +35,9 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        //cbp = (CheckBoxPreference)findPreference("checkbox_preference");
-        //cbp.setOnPreferenceChangeListener(mListPreferenceListener);
-
-
-        //PreferenceScreen preference = (PreferenceScreen)getPreferenceScreen().findPreference("preferenceKey2");
-        //preference.setOnPreferenceClickListener(new LinkOnPreference(getApplicationContext()));
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         cbp = (CheckBoxPreference)findPreference("checkbox_preference");
         cbp.setOnPreferenceChangeListener(this);
     }
@@ -67,14 +45,13 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         boolean pNotification = sharedPreferences.getBoolean("checkbox_preference", false);
-        if (!(pNotification)) {
-            sendNotification();
-        } else {
+        if (pNotification) {
             mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
             mManager.cancel(0);
+        } else {
+            sendNotification();
         }
-        Log.e("", "ok");
-        onResume();
         return true;
     }
+
 }
