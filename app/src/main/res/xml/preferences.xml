@@ -3,17 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="pref">
 
-    <PreferenceCategory
-        android:title="PreferenceCategory - 2">
-        <PreferenceScreen
-            android:key="preferenceKey2"
-            android:title="@string/auth_setting">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetPackage="jp.wktk.meijiwirelesslogin"
-                android:targetClass="jp.wktk.meijiwirelesslogin.AuthActivity" />
-        </PreferenceScreen>
-    </PreferenceCategory>
+    <PreferenceScreen
+        android:key="preferenceKey2"
+        android:title="@string/auth_setting">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="jp.wktk.meijiwirelesslogin"
+            android:targetClass="jp.wktk.meijiwirelesslogin.AuthActivity" />
+    </PreferenceScreen>
 
     <CheckBoxPreference
         android:key="checkbox_preference2"
