@@ -25,10 +25,11 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
 
         Notification n = new Notification();
         n.icon = R.drawable.ic_launcher;
-        n.tickerText = "Wow! Meiji";
+        n.tickerText = getResources().getString(R.string.app_name);
         n.number = 1;
         n.flags = Notification.FLAG_ONGOING_EVENT; // 常駐
-        n.setLatestEventInfo(getApplicationContext(), "Wow! Meiji", "起動中", pi);
+        n.setLatestEventInfo(getApplicationContext(), getResources().getString(R.string.app_name),
+                getResources().getString(R.string.working), pi);
 
         mManager.notify(0, n);
     }
