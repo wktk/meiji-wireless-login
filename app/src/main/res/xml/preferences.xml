@@ -14,11 +14,11 @@
 
     <CheckBoxPreference
         android:key="checkbox_preference2"
-        android:title="@string/enable_auto" />
+        android:title="@string/enabled" />
 
     <CheckBoxPreference
-        android:key="checkbox_preference"
+        android:key="taskbar"
         android:title="@string/taskbar"
-        android:summary="@string/taskbar_on_off" />
+        android:summary="@string/taskbar_description" />
 
 </PreferenceScreen>

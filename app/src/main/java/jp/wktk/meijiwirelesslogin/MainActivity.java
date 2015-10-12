@@ -39,13 +39,13 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
         mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        cbp = (CheckBoxPreference)findPreference("checkbox_preference");
+        cbp = (CheckBoxPreference)findPreference("taskbar");
         cbp.setOnPreferenceChangeListener(this);
     }
 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        boolean pNotification = sharedPreferences.getBoolean("checkbox_preference", false);
+        boolean pNotification = sharedPreferences.getBoolean("taskbar", false);
         if (pNotification) {
             mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
             mManager.cancel(0);
