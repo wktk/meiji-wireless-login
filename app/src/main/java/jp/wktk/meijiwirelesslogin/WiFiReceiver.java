@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.preference.PreferenceManager;
 
 import java.io.IOException;
 import java.net.URLEncoder;
