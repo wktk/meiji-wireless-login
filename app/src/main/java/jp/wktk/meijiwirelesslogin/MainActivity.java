@@ -25,7 +25,6 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
     private CheckBoxPreference cbp;
 
     private NotificationManager mManager;
-    private int number = 0;
 
     private void sendNotification() {
         mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
@@ -42,8 +41,7 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
         n.flags = Notification.FLAG_ONGOING_EVENT; // 常駐
         n.setLatestEventInfo(getApplicationContext(), "Wow! Meiji", "起動中", pi);
 
-        mManager.notify(1, n);
-        number++;
+        mManager.notify(0, n);
     }
 
     @Override
@@ -73,7 +71,7 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
             sendNotification();
         } else {
             mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-            mManager.cancel(number);
+            mManager.cancel(0);
         }
         Log.e("", "ok");
         onResume();
