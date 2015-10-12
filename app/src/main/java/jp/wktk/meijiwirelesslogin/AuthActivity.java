@@ -47,5 +47,6 @@ public class AuthActivity extends AppCompatActivity {
         editor.putString(PREF_PASSWORD, editPass.getText().toString());
         editor.apply();
         Toast.makeText(AuthActivity.this, R.string.saved, Toast.LENGTH_LONG).show();
+        finish();
     }
 }
