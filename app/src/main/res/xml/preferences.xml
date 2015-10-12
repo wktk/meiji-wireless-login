@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="pref">
 
     <PreferenceCategory
         android:title="PreferenceCategory - 2">
@@ -15,7 +16,7 @@
     </PreferenceCategory>
 
     <CheckBoxPreference
-        android:key="checkbox_preference"
+        android:key="checkbox_preference2"
         android:title="@string/enable_auto" />
 
     <CheckBoxPreference

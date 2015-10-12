@@ -9,7 +9,7 @@
     <string name="saved">保存しました</string>
 
     <string name="auth_setting">学生番号／パスワード設定</string>
-    <string name="taskbar">タスクバーに常駐</string>
+    <string name="taskbar">タスクバーに常駐する</string>
     <string name="taskbar_on_off">タスクバーに接続状況を表示します。</string>
 
     <string name="enable_auto">自動接続を有効にする</string>
