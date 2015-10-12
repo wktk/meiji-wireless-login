@@ -13,7 +13,7 @@
     </PreferenceScreen>
 
     <CheckBoxPreference
-        android:key="checkbox_preference2"
+        android:key="enabled"
         android:title="@string/enabled" />
 
     <CheckBoxPreference

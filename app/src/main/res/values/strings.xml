@@ -12,5 +12,6 @@
     <string name="taskbar">タスクバーに常駐する</string>
     <string name="taskbar_description">タスクバーに接続状況を表示します。</string>
     <string name="working">起動中</string>
+    <string name="not_working">停止中</string>
     <string name="enabled">自動接続を有効にする</string>
 </resources>

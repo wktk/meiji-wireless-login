@@ -12,13 +12,20 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
-public class MainActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
+public class MainActivity extends PreferenceActivity {
 
     private CheckBoxPreference cbp;
     private NotificationManager mManager;
     private SharedPreferences globalSharedPreferences;
 
     private void sendNotification() {
+        mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        mManager.cancel(0);
+
+        if (!globalSharedPreferences.getBoolean("taskbar", false)) {
+            return;
+        }
+
         Intent intent = new Intent();
         intent.setClassName("jp.wktk.meijiwirelesslogin", "jp.wktk.meijiwirelesslogin.MainActivity");
 
@@ -29,8 +36,7 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
         n.tickerText = getResources().getString(R.string.app_name);
         n.number = 1;
         n.flags = Notification.FLAG_ONGOING_EVENT; // 常駐
-        n.setLatestEventInfo(getApplicationContext(), getResources().getString(R.string.app_name),
-                getResources().getString(R.string.working), pi);
+        n.setLatestEventInfo(getApplicationContext(), getResources().getString(R.string.app_name), getStatus(), pi);
 
         mManager.notify(0, n);
     }
@@ -42,25 +48,25 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         cbp = (CheckBoxPreference)findPreference("taskbar");
-        cbp.setOnPreferenceChangeListener(this);
-    }
-
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean taskbar = sharedPreferences.getBoolean("taskbar", false);
-        boolean enabled = sharedPreferences.getBoolean("enabled", false);
-        SharedPreferences.Editor editor = globalSharedPreferences.edit();
-        editor.putBoolean("taskbar", taskbar);
-        editor.putBoolean("enabled", enabled);
-        editor.apply();
-
-        if (taskbar) {
-            mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-            mManager.cancel(0);
-        } else {
-            sendNotification();
-        }
-        return true;
+        cbp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                SharedPreferences.Editor editor = globalSharedPreferences.edit();
+                editor.putBoolean("taskbar", (Boolean) newValue);
+                editor.apply();
+                sendNotification();
+                return true;
+            }
+        });
+        cbp = (CheckBoxPreference)findPreference("enabled");
+        cbp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                SharedPreferences.Editor editor = globalSharedPreferences.edit();
+                editor.putBoolean("enabled", (Boolean) newValue);
+                editor.apply();
+                sendNotification();
+                return true;
+            }
+        });
     }
 
     private int getNotificationIcon() {
@@ -68,6 +74,14 @@ public class MainActivity extends PreferenceActivity implements Preference.OnPre
             return R.drawable.ic_silhouette;
         } else {
             return R.drawable.ic_launcher;
+        }
+    }
+
+    private String getStatus() {
+        if (globalSharedPreferences.getBoolean("enabled", true)) {
+            return getResources().getString(R.string.working);
+        } else {
+            return getResources().getString(R.string.not_working);
         }
     }
 
