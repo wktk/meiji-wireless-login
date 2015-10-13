@@ -1,8 +1,8 @@
 package jp.wktk.meijiwirelesslogin;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AuthActivity extends AppCompatActivity {
+public class AuthActivity extends Activity {
     public static String PREF_ID = "id";
     public static String PREF_PASSWORD = "password";
     public static String PREF_NAME = "credentials";

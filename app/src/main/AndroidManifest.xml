@@ -17,7 +17,7 @@
 
         <activity
             android:name=".AuthActivity"
-            android:theme="@style/Theme.AppCompat"/>
+            android:theme="@style/Theme.AppCompat.Dialog"/>
 
         <receiver android:name="jp.wktk.meijiwirelesslogin.WiFiReceiver" >
             <intent-filter android:priority="900">
