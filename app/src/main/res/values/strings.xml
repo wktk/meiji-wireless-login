@@ -2,9 +2,9 @@
     <string name="app_name">Wow! Meiji</string>
 
     <!-- AuthActivity -->
-    <string name="main_message">学生番号/教職員番号とパスワードを入力してください</string>
-    <string name="login_id">Student / Faculty No.</string>
-    <string name="password">Password</string>
+    <string name="main_message">ログイン情報を入力してください</string>
+    <string name="login_id">学生番号 / 教職員番号 / MINDモバイルアカウント</string>
+    <string name="password">パスワード</string>
     <string name="switch_letter_blind">パスワードを表示</string>
     <string name="save">保存</string>
     <string name="saved">保存しました</string>
