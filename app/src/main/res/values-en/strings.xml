@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wow! Meiji</string>
-    <string name="auth_setting">Open ID settings</string>
+    <string name="auth_setting">Open account settings</string>
     <string name="enabled">Enable auto login</string>
     <string name="login_id">Student ID / Faculty ID / MIND Mobile Account</string>
     <string name="main_message">Input your login information</string>
