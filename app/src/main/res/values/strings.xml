@@ -1,17 +1,21 @@
 <resources>
     <string name="app_name">Wow! Meiji</string>
 
+    <!-- AuthActivity -->
+    <string name="main_message">学生番号/教職員番号とパスワードを入力してください</string>
     <string name="login_id">Student / Faculty No.</string>
     <string name="password">Password</string>
     <string name="switch_letter_blind">パスワードを表示</string>
     <string name="save">保存</string>
-    <string name="main_message">学生番号/教職員番号とパスワードを入力してください</string>
     <string name="saved">保存しました</string>
 
-    <string name="auth_setting">学生番号／パスワード設定</string>
+    <!-- MainActivity -->
+    <string name="enabled">自動接続を有効にする</string>
     <string name="taskbar">タスクバーに常駐する</string>
     <string name="taskbar_description">タスクバーに接続状況を表示します。</string>
+    <string name="auth_setting">学生番号／パスワード設定</string>
+
+    <!-- MainActivity Notification -->
     <string name="working">起動中</string>
     <string name="not_working">停止中</string>
-    <string name="enabled">自動接続を有効にする</string>
 </resources>
