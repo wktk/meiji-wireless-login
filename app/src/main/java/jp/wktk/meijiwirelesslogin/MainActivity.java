@@ -31,7 +31,7 @@ public class MainActivity extends PreferenceActivity {
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
 
         Notification n = new Notification();
-        n.icon = getNotificationIcon();
+        n.icon = R.drawable.ic_silhouette;
         n.tickerText = getResources().getString(R.string.app_name);
         n.number = 1;
         n.flags = Notification.FLAG_ONGOING_EVENT; // 常駐
@@ -70,17 +70,9 @@ public class MainActivity extends PreferenceActivity {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         updateNotification();
-    }
-
-    private int getNotificationIcon() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            return R.drawable.ic_silhouette;
-        } else {
-            return R.drawable.ic_launcher;
-        }
     }
 
     private String getStatus() {
