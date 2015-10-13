@@ -69,6 +69,12 @@ public class MainActivity extends PreferenceActivity {
         updateNotification();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateNotification();
+    }
+
     private int getNotificationIcon() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             return R.drawable.ic_silhouette;
