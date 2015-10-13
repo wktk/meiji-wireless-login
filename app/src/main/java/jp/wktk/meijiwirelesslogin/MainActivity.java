@@ -17,7 +17,7 @@ public class MainActivity extends PreferenceActivity {
     private NotificationManager mManager;
     private SharedPreferences globalSharedPreferences;
 
-    private void sendNotification() {
+    private void updateNotification() {
         mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         mManager.cancel(0);
 
@@ -52,7 +52,7 @@ public class MainActivity extends PreferenceActivity {
                 SharedPreferences.Editor editor = globalSharedPreferences.edit();
                 editor.putBoolean("taskbar", (Boolean) newValue);
                 editor.apply();
-                sendNotification();
+                updateNotification();
                 return true;
             }
         });
@@ -62,11 +62,11 @@ public class MainActivity extends PreferenceActivity {
                 SharedPreferences.Editor editor = globalSharedPreferences.edit();
                 editor.putBoolean("enabled", (Boolean) newValue);
                 editor.apply();
-                sendNotification();
+                updateNotification();
                 return true;
             }
         });
-        sendNotification();
+        updateNotification();
     }
 
     private int getNotificationIcon() {
