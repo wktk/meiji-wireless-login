@@ -13,7 +13,7 @@
         android:summary="@string/taskbar_description" />
 
     <PreferenceScreen
-        android:key="preferenceKey2"
+        android:key="auth_settings"
         android:title="@string/auth_setting">
         <intent
             android:action="android.intent.action.VIEW"
