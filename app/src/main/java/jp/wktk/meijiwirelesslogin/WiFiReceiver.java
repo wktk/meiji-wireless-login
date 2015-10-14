@@ -60,6 +60,9 @@ public class WiFiReceiver extends BroadcastReceiver {
         WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         String ssid = wifiInfo.getSSID();
+        if (ssid == null) {
+            return;
+        }
         if (ssid.startsWith("\"") && ssid.endsWith("\"")){
             ssid = ssid.substring(1, ssid.length()-1);
         }
