@@ -62,7 +62,7 @@ public class WiFiReceiver extends BroadcastReceiver {
         // Verify that connection is available
         ConnectivityManager cManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (nInfo == null || !nInfo.isAvailable() || nInfo.isConnected()) {
+        if (nInfo == null || !nInfo.isAvailable()) {
             return;
         }
 
