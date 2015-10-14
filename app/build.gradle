@@ -8,8 +8,8 @@ android {
         applicationId "jp.wktk.meijiwirelesslogin"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 6
-        versionName "1.1.1"
+        versionCode 7
+        versionName "1.1.2"
     }
     buildTypes {
         release {
