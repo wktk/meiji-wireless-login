@@ -42,6 +42,7 @@ public class WiFiReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        // Load preferences
         sharedPreferences = context.getSharedPreferences("system", Context.MODE_PRIVATE);
         if (!sharedPreferences.getBoolean("enabled", true)) {
             return;
