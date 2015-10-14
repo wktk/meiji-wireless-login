@@ -9,26 +9,43 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.util.Log;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.net.SocketFactory;
+public class WiFiReceiver extends BroadcastReceiver {
 
-public class WiFiReceiver extends BroadcastReceiver implements Callback {
+    private static final String[] SSID_STRINGS = {
+            "MIND-wireless-ap-n",
+            "\"MIND-wireless-ap-n\"",
+            "MIND-wireless-ap-bg",
+            "\"MIND-wireless-ap-bg\"",
+
+    };
+    private static final List<String> SSIDS = Arrays.asList(SSID_STRINGS);
 
     private SharedPreferences sharedPreferences;
-    private SocketFactory socketFactory;
+    private URL mURL;
+    private boolean triedLogin = false;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.v("MIND", "Received broadcast");
+
+        // Load preferences
         sharedPreferences = context.getSharedPreferences("system", Context.MODE_PRIVATE);
         if (!sharedPreferences.getBoolean("enabled", true)) {
             return;
@@ -38,36 +55,40 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
         WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         String ssid = wifiInfo.getSSID();
-        if (!ssid.equals("\"MIND-wireless-ap-n\"") && !ssid.equals("\"MIND-wireless-ap-bg\"")) {
+        if (!SSIDS.contains(ssid)) {
             return;
         }
 
         // Verify that connection is available
         ConnectivityManager cManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (nInfo == null || !nInfo.isAvailable() || nInfo.isConnected()) {
+        if (nInfo == null || !nInfo.isAvailable()) {
             return;
         }
 
         // Select Wi-Fi network on APIs greater than v21
         if (Build.VERSION.SDK_INT >= 21) {
-            getWifiSocketFactory(cManager);
-        } else {
-            socketFactory = SocketFactory.getDefault();
+            selectWifiNetwork(cManager);
         }
         sharedPreferences = context.getSharedPreferences(AuthActivity.PREF_NAME, Context.MODE_PRIVATE);
 
-        HashMap params = new HashMap();
-        params.put("socket", socketFactory);
-        params.put("host", "connectivitycheck.android.com");
-        params.put("port", 80);
-        params.put("request", "GET /generate_204 HTTP/1.1\r\n\r\n");
-        AsyncSocket asyncSocket = new AsyncSocket(this);
-        asyncSocket.execute(params);
+        try {
+            mURL = new URL("http://client3.google.com/generate_204");
+        } catch (MalformedURLException e) {
+            return;
+        }
+
+        checkConnectivity();
     }
 
-    @Override
-    public void onSocketComplete(String response) {
+    public void login(String response) {
+        if (response == null) {
+            return;
+        }
+        if (triedLogin) {
+            done(false);
+            return;
+        }
         String url;
         Pattern pattern = Pattern.compile("<LoginURL>(.*)</LoginURL>");
         Matcher matcher = pattern.matcher(response);
@@ -76,41 +97,92 @@ public class WiFiReceiver extends BroadcastReceiver implements Callback {
         } else {
             return;
         }
-        Uri uri = Uri.parse(url);
-        HashMap params = new HashMap();
-        String content;
         try {
-            content = "UserName=" + URLEncoder.encode(sharedPreferences.getString(AuthActivity.PREF_ID, ""), "UTF-8");
-            content += "&Password=" + URLEncoder.encode(sharedPreferences.getString(AuthActivity.PREF_PASSWORD, ""), "UTF-8");
-        } catch (IOException e) {
+            mURL = new URL(url);
+        } catch (MalformedURLException e) {
             return;
         }
-        params.put("socket", socketFactory);
-        params.put("host", uri.getHost());
-        params.put("port", 8080);
-        params.put("request",
-                        "POST " + uri.getPath() + " HTTP/1.1\n" +
-                        "Host: " + uri.getHost() +
-                        "Content-Type: text/plain\n" +
-                        "Content-length: " + content.length() + "\n" +
-                        "\n" + content);
-        AsyncSocket asyncSocket = new AsyncSocket(new Callback() {
-            @Override
-            public void onSocketComplete(String response) {
+
+        new Thread(new Runnable() {
+            public void run() {
+                HttpURLConnection urlConnection = null;
+                String params;
+                try {
+                    urlConnection = (HttpURLConnection) mURL.openConnection();
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.setDoOutput(true);
+                    urlConnection.setInstanceFollowRedirects(false);
+                    urlConnection.setUseCaches(false);
+                    params = "UserName=" + URLEncoder.encode(sharedPreferences.getString(AuthActivity.PREF_ID, ""), "UTF-8");
+                    params += "&Password=" + URLEncoder.encode(sharedPreferences.getString(AuthActivity.PREF_PASSWORD, ""), "UTF-8");
+                    PrintStream printStream = new PrintStream(urlConnection.getOutputStream());
+                    printStream.print(params);
+                    printStream.close();
+                    urlConnection.getInputStream();
+                } catch (IOException e) {
+                    Log.e("MIND:Login", e.toString());
+                    return;
+                } finally {
+                    if (urlConnection != null) urlConnection.disconnect();
+                }
             }
-        });
-        asyncSocket.execute(params);
+        }).start();
+
+        triedLogin = true;
     }
 
     @TargetApi(21)
-    private void getWifiSocketFactory(ConnectivityManager cManager) {
+    private void selectWifiNetwork(ConnectivityManager cManager) {
         Network[] networks = cManager.getAllNetworks();
         for (Network network : networks) {
             NetworkCapabilities networkCapabilities = cManager.getNetworkCapabilities(network);
             if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                socketFactory = network.getSocketFactory();
+                ConnectivityManager.setProcessDefaultNetwork(network);
             }
         }
     }
+
+    private void checkConnectivity() {
+        new Thread(new Runnable() {
+            public void run() {
+                HttpURLConnection urlConnection = null;
+                String body = null;
+                int httpResponseCode = 500;
+                try {
+                    urlConnection = (HttpURLConnection) mURL.openConnection();
+                    urlConnection.setInstanceFollowRedirects(false);
+                    urlConnection.setUseCaches(false);
+                    urlConnection.getInputStream();
+                    httpResponseCode = urlConnection.getResponseCode();
+                    InputStream inputStream = urlConnection.getInputStream();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    while (true) {
+                        byte[] line = new byte[1024];
+                        int size = inputStream.read(line);
+                        if (size <= 0)
+                            break;
+                        stringBuilder.append(new String(line, "UTF-8"));
+                    }
+                    body = stringBuilder.toString();
+                } catch (IOException e) {;
+                    Log.e("MIND:Check", e.toString());
+                    return;
+                } finally {
+                    if (urlConnection != null) urlConnection.disconnect();
+                }
+                if (httpResponseCode == 204) {
+                    done(true);
+                } else {
+                    login(body);
+                }
+            }
+        }).start();
+    }
+
+    private void done(boolean isSucceeded) {
+        Log.i("MIND", "Done.");
+        // Done logging in
+    }
+
 
 }
