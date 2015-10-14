@@ -86,7 +86,6 @@ public class WiFiReceiver extends BroadcastReceiver {
             return;
         }
         if (triedLogin) {
-            done(false);
             return;
         }
         String url;
@@ -102,6 +101,8 @@ public class WiFiReceiver extends BroadcastReceiver {
         } catch (MalformedURLException e) {
             return;
         }
+
+        triedLogin = true;
 
         new Thread(new Runnable() {
             public void run() {
@@ -125,10 +126,9 @@ public class WiFiReceiver extends BroadcastReceiver {
                 } finally {
                     if (urlConnection != null) urlConnection.disconnect();
                 }
+                checkConnectivity();
             }
         }).start();
-
-        triedLogin = true;
     }
 
     @TargetApi(21)
@@ -171,7 +171,9 @@ public class WiFiReceiver extends BroadcastReceiver {
                     if (urlConnection != null) urlConnection.disconnect();
                 }
                 if (httpResponseCode == 204) {
-                    done(true);
+                    if (triedLogin) {
+                        done();
+                    }
                 } else {
                     login(body);
                 }
@@ -179,9 +181,8 @@ public class WiFiReceiver extends BroadcastReceiver {
         }).start();
     }
 
-    private void done(boolean isSucceeded) {
+    private void done() {
         Log.i("MIND", "Done.");
-        // Done logging in
     }
 
 
