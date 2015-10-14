@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 public class WiFiReceiver extends BroadcastReceiver {
 
+    private static final String CHECK_URL = "http://client3.google.com/generate_204";
     private static final String[] SSID_STRINGS = {
             "MIND-wireless-ap-n",
             "MIND-wireless-ap-bg",
@@ -74,7 +75,7 @@ public class WiFiReceiver extends BroadcastReceiver {
         sharedPreferences = context.getSharedPreferences(AuthActivity.PREF_NAME, Context.MODE_PRIVATE);
 
         try {
-            mURL = new URL("http://client3.google.com/generate_204");
+            mURL = new URL(CHECK_URL);
         } catch (MalformedURLException e) {
             return;
         }
@@ -126,6 +127,12 @@ public class WiFiReceiver extends BroadcastReceiver {
                     return;
                 } finally {
                     if (urlConnection != null) urlConnection.disconnect();
+                }
+
+                try {
+                    mURL = new URL(CHECK_URL);
+                } catch (MalformedURLException e) {
+                    return;
                 }
                 checkConnectivity();
             }
