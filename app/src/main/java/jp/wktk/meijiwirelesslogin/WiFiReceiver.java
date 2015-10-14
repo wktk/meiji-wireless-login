@@ -12,7 +12,9 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +30,7 @@ import java.util.regex.Pattern;
 
 public class WiFiReceiver extends BroadcastReceiver {
 
+    private final Handler handler = new Handler();
     private static final String CHECK_URL = "http://client3.google.com/generate_204";
     private static final String[] SSID_STRINGS = {
             "MIND-wireless-ap-n",
@@ -36,13 +39,16 @@ public class WiFiReceiver extends BroadcastReceiver {
     };
     private static final List<String> SSIDS = Arrays.asList(SSID_STRINGS);
 
+    private Context context;
     private SharedPreferences sharedPreferences;
     private URL mURL;
     private boolean triedLogin = false;
+    private int result;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.v("MIND", "Received broadcast");
+        this.context = context;
 
         // Load preferences
         sharedPreferences = context.getSharedPreferences("system", Context.MODE_PRIVATE);
@@ -183,14 +189,33 @@ public class WiFiReceiver extends BroadcastReceiver {
                         done();
                     }
                 } else {
-                    login(body);
+                    if (triedLogin) {
+                        failed();
+                    } else {
+                        login(body);
+                    }
                 }
             }
         }).start();
     }
 
     private void done() {
-        Log.i("MIND", "Done.");
+        result = R.string.login_succeeded;
+        makeShortToast();
+    }
+
+    private void failed() {
+        result = R.string.login_failed;
+        makeShortToast();
+    }
+
+    private void makeShortToast() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
