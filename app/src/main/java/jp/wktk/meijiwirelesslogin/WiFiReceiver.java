@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +43,8 @@ public class WiFiReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.v("MIND", "Received broadcast");
+
         // Load preferences
         sharedPreferences = context.getSharedPreferences("system", Context.MODE_PRIVATE);
         if (!sharedPreferences.getBoolean("enabled", true)) {
@@ -117,6 +120,8 @@ public class WiFiReceiver extends BroadcastReceiver {
                     printStream.close();
                     urlConnection.getInputStream();
                 } catch (IOException e) {
+                    Log.e("MIND:Login", e.toString());
+                    return;
                 } finally {
                     if (urlConnection != null) urlConnection.disconnect();
                 }
@@ -160,6 +165,8 @@ public class WiFiReceiver extends BroadcastReceiver {
                     }
                     body = stringBuilder.toString();
                 } catch (IOException e) {;
+                    Log.e("MIND:Check", e.toString());
+                    return;
                 } finally {
                     if (urlConnection != null) urlConnection.disconnect();
                 }
@@ -173,6 +180,7 @@ public class WiFiReceiver extends BroadcastReceiver {
     }
 
     private void done(boolean isSucceeded) {
+        Log.i("MIND", "Done.");
         // Done logging in
     }
 
