@@ -30,9 +30,7 @@ public class WiFiReceiver extends BroadcastReceiver {
 
     private static final String[] SSID_STRINGS = {
             "MIND-wireless-ap-n",
-            "\"MIND-wireless-ap-n\"",
             "MIND-wireless-ap-bg",
-            "\"MIND-wireless-ap-bg\"",
 
     };
     private static final List<String> SSIDS = Arrays.asList(SSID_STRINGS);
@@ -55,6 +53,9 @@ public class WiFiReceiver extends BroadcastReceiver {
         WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         String ssid = wifiInfo.getSSID();
+        if (ssid.startsWith("\"") && ssid.endsWith("\"")){
+            ssid = ssid.substring(1, ssid.length()-1);
+        }
         if (!SSIDS.contains(ssid)) {
             return;
         }
