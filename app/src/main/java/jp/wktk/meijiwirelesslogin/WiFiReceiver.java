@@ -20,10 +20,21 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WiFiReceiver extends BroadcastReceiver {
+
+    private static final String[] SSID_STRINGS = {
+            "MIND-wireless-ap-n",
+            "\"MIND-wireless-ap-n\"",
+            "MIND-wireless-ap-bg",
+            "\"MIND-wireless-ap-bg\"",
+
+    };
+    private static final List<String> SSIDS = Arrays.asList(SSID_STRINGS);
 
     private SharedPreferences sharedPreferences;
     private URL mURL;
@@ -40,7 +51,7 @@ public class WiFiReceiver extends BroadcastReceiver {
         WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         String ssid = wifiInfo.getSSID();
-        if (!ssid.equals("\"MIND-wireless-ap-n\"") && !ssid.equals("\"MIND-wireless-ap-bg\"")) {
+        if (!SSIDS.contains(ssid)) {
             return;
         }
 
@@ -67,6 +78,9 @@ public class WiFiReceiver extends BroadcastReceiver {
     }
 
     public void login(String response) {
+        if (response == null) {
+            return;
+        }
         if (triedLogin) {
             done(false);
             return;
@@ -144,7 +158,7 @@ public class WiFiReceiver extends BroadcastReceiver {
                         stringBuilder.append(new String(line, "UTF-8"));
                     }
                     body = stringBuilder.toString();
-                } catch (IOException e) {
+                } catch (IOException e) {;
                 } finally {
                     if (urlConnection != null) urlConnection.disconnect();
                 }
