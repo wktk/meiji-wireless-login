@@ -18,4 +18,8 @@
     <!-- MainActivity Notification -->
     <string name="working">起動中</string>
     <string name="not_working">停止中</string>
+
+    <!-- WiFiReceiver -->
+    <string name="login_succeeded">MIND: ログイン成功</string>
+    <string name="login_failed">MIND: ログイン失敗</string>
 </resources>

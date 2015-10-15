@@ -12,7 +12,9 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +30,8 @@ import java.util.regex.Pattern;
 
 public class WiFiReceiver extends BroadcastReceiver {
 
+    private final Handler handler = new Handler();
+    private static final String CHECK_URL = "http://client3.google.com/generate_204";
     private static final String[] SSID_STRINGS = {
             "MIND-wireless-ap-n",
             "MIND-wireless-ap-bg",
@@ -35,13 +39,16 @@ public class WiFiReceiver extends BroadcastReceiver {
     };
     private static final List<String> SSIDS = Arrays.asList(SSID_STRINGS);
 
+    private Context context;
     private SharedPreferences sharedPreferences;
     private URL mURL;
     private boolean triedLogin = false;
+    private int result;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.v("MIND", "Received broadcast");
+        this.context = context;
 
         // Load preferences
         sharedPreferences = context.getSharedPreferences("system", Context.MODE_PRIVATE);
@@ -53,6 +60,9 @@ public class WiFiReceiver extends BroadcastReceiver {
         WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         String ssid = wifiInfo.getSSID();
+        if (ssid == null) {
+            return;
+        }
         if (ssid.startsWith("\"") && ssid.endsWith("\"")){
             ssid = ssid.substring(1, ssid.length()-1);
         }
@@ -74,7 +84,7 @@ public class WiFiReceiver extends BroadcastReceiver {
         sharedPreferences = context.getSharedPreferences(AuthActivity.PREF_NAME, Context.MODE_PRIVATE);
 
         try {
-            mURL = new URL("http://client3.google.com/generate_204");
+            mURL = new URL(CHECK_URL);
         } catch (MalformedURLException e) {
             return;
         }
@@ -87,7 +97,6 @@ public class WiFiReceiver extends BroadcastReceiver {
             return;
         }
         if (triedLogin) {
-            done(false);
             return;
         }
         String url;
@@ -103,6 +112,8 @@ public class WiFiReceiver extends BroadcastReceiver {
         } catch (MalformedURLException e) {
             return;
         }
+
+        triedLogin = true;
 
         new Thread(new Runnable() {
             public void run() {
@@ -126,10 +137,15 @@ public class WiFiReceiver extends BroadcastReceiver {
                 } finally {
                     if (urlConnection != null) urlConnection.disconnect();
                 }
+
+                try {
+                    mURL = new URL(CHECK_URL);
+                } catch (MalformedURLException e) {
+                    return;
+                }
+                checkConnectivity();
             }
         }).start();
-
-        triedLogin = true;
     }
 
     @TargetApi(21)
@@ -172,17 +188,37 @@ public class WiFiReceiver extends BroadcastReceiver {
                     if (urlConnection != null) urlConnection.disconnect();
                 }
                 if (httpResponseCode == 204) {
-                    done(true);
+                    if (triedLogin) {
+                        done();
+                    }
                 } else {
-                    login(body);
+                    if (triedLogin) {
+                        failed();
+                    } else {
+                        login(body);
+                    }
                 }
             }
         }).start();
     }
 
-    private void done(boolean isSucceeded) {
-        Log.i("MIND", "Done.");
-        // Done logging in
+    private void done() {
+        result = R.string.login_succeeded;
+        makeShortToast();
+    }
+
+    private void failed() {
+        result = R.string.login_failed;
+        makeShortToast();
+    }
+
+    private void makeShortToast() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

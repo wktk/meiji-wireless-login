@@ -13,4 +13,6 @@
     <string name="taskbar">Stay in the task bar</string>
     <string name="taskbar_description">Show status in the task bar</string>
     <string name="working">Running</string>
+    <string name="login_failed">MIND: Login failed</string>
+    <string name="login_succeeded">MIND: Login succeeded</string>
 </resources>
